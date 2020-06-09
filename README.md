@@ -8,6 +8,7 @@ docker run -p 5901:5901 -d --privileged --cap-add=ALL -v /lib/modules:/lib/modul
 Inspired by:
 * https://github.com/sickcodes/Docker-OSX
 * https://github.com/kholia/OSX-KVM
+* https://artem.services/?p=752&lang=en
 
 ### Is This Legal?
 
