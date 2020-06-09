@@ -1,9 +1,13 @@
 # osx in docker
 
+Run headless container. Connect via VNC.
+
 ```
 docker build -t osx .
 docker run -p 5901:5901 -d --privileged --cap-add=ALL -v /lib/modules:/lib/modules -v /dev:/dev osx
 ```
+
+![screenshot](screenshot.png)
 
 Inspired by:
 * https://github.com/sickcodes/Docker-OSX
