@@ -44,5 +44,5 @@ RUN git clone https://github.com/kholia/OSX-KVM.git .; \
 ENV DISPLAY :0.0
 ENV USER arch
 
-COPY script.sh script.sh
-CMD ./script.sh
+COPY boot.sh boot.sh
+CMD ./boot.sh

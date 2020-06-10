@@ -4,10 +4,40 @@ Run headless container. Connect via VNC.
 
 ```
 docker build -t osx .
-docker run -p 5901:5901 -d --privileged --cap-add=ALL -v /lib/modules:/lib/modules -v /dev:/dev osx
+docker run --name osx-in-docker -p 5901:5901 -d --privileged --cap-add=ALL -v /lib/modules:/lib/modules -v /dev:/dev osx
 ```
 
 ![screenshot](screenshot.png)
+
+# Persistent volume
+
+Maybe you want to keep your data outside of container.
+
+## Create HDD first
+
+Before initial run, you can create your HDD outside container. As argument, specify size of new HDD.
+
+```
+docker build -t osx-hdd -f hdd.Dockerfile .
+docker run --rm -v $PWD:/data osx-hdd 128G
+```
+
+## Get HDD from container
+
+You started first container without persistency keeping in mind? We've got you covered! Run container only as `/bin/bash` so we can get data from it. This ensures, that no data will be written to disk while copying.
+
+```
+docker run --name osx-in-docker --rm osx /bin/bash
+docker cp osx-in-docker:/home/arch/OSX-KVM/mac_hdd_ng.img mac_hdd_ng.img
+```
+
+## Run container with persistent volume
+
+When we have our `mac_hdd_ng.img` outside of container, we can run it like this:
+
+```
+docker run --name osx-in-docker -p 5901:5901 -d --privileged --cap-add=ALL -v /lib/modules:/lib/modules -v /dev:/dev -v $PWD/mac_hdd_ng.img:/home/arch/OSX-KVM/mac_hdd_ng.img osx
+```
 
 Inspired by:
 * https://github.com/sickcodes/Docker-OSX
