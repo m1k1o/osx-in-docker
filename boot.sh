@@ -21,9 +21,9 @@ done
 
 qemu-system-x86_64 \
     -vga std -nographic -vnc :1 \
-    -enable-kvm -m "$MEM" -cpu Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,$MY_OPTIONS \
+    -enable-kvm -m "$MEM" -cpu "Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,$OPT" \
     -machine q35 \
-    -smp "$MEM" \
+    -smp "$SMP" \
     -usb -device usb-kbd -device usb-tablet \
     -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc" \
     -drive if=pflash,format=raw,readonly,file="./OVMF_CODE.fd" \
