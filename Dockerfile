@@ -45,4 +45,4 @@ ENV DISPLAY :0.0
 ENV USER arch
 
 COPY boot.sh boot.sh
-CMD ./boot.sh
+ENTRYPOINT ./boot.sh

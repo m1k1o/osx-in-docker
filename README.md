@@ -24,10 +24,10 @@ docker run --rm -v $PWD:/data osx-hdd 128G
 
 ## Get HDD from container
 
-You started first container without persistency keeping in mind? We've got you covered! Run container only as `/bin/bash` so we can get data from it. This ensures, that no data will be written to disk while copying.
+You started first container without persistency keeping in mind? We've got you covered! Run container with bash as entrypoint, so we can get data from it. This ensures, that no data will be written to disk while copying.
 
 ```
-docker run --name osx-in-docker --rm osx /bin/bash
+docker run --name --entrypoint /bin/bash osx-in-docker --rm osx
 docker cp osx-in-docker:/home/arch/OSX-KVM/mac_hdd_ng.img mac_hdd_ng.img
 ```
 
@@ -37,6 +37,31 @@ When we have our `mac_hdd_ng.img` outside of container, we can run it like this:
 
 ```
 docker run --name osx-in-docker -p 5901:5901 -d --privileged --cap-add=ALL -v /lib/modules:/lib/modules -v /dev:/dev -v $PWD/mac_hdd_ng.img:/home/arch/OSX-KVM/mac_hdd_ng.img osx
+```
+
+# Customize
+
+Set up custom HDD size and osx version:
+
+```
+docker build -t osx . \
+	--build-arg VERSION=10.14.6 \
+	--build-arg SIZE=50G
+```
+
+Pass custom runtime arguments. Specify RAM size, CPUs and others.
+
+```
+docker run --name osx-in-docker -d \
+	-p 5901:5901 \
+	--privileged --cap-add=ALL \
+	-v /lib/modules:/lib/modules \
+	-v /dev:/dev \
+	osx \
+		--mem "3072" \
+		--smp "4,cores=2" \
+		--opt "+pcid,+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check" \
+		--mac "52:54:00:09:49:17"
 ```
 
 Inspired by:
