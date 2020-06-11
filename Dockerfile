@@ -13,7 +13,7 @@ RUN tee -a /etc/pacman.conf <<< '[community-testing]'; \
     #
     # add user
     useradd arch; \
-    echo 'arch ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers \
+    echo 'arch ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers; \
     mkdir /home/arch; \
     chown arch:arch /home/arch;
 
