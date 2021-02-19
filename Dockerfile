@@ -4,6 +4,13 @@ FROM archlinux:latest
 ARG SIZE=32G
 ARG VERSION=10.14.6
 
+# WORKAROUND for glibc 2.33 and old Docker
+# See https://github.com/actions/virtual-environments/issues/2658
+# Thanks to https://github.com/lxqt/lxqt-panel/pull/1562
+RUN patched_glibc=glibc-linux4-2.33-4-x86_64.pkg.tar.zst && \
+    curl -LO "https://repo.archlinuxcn.org/x86_64/$patched_glibc" && \
+    bsdtar -C / -xvf "$patched_glibc"
+
 RUN tee -a /etc/pacman.conf <<< '[community-testing]'; \
     tee -a /etc/pacman.conf <<< 'Include = /etc/pacman.d/mirrorlist'; \
     #
@@ -17,14 +24,19 @@ RUN tee -a /etc/pacman.conf <<< '[community-testing]'; \
     mkdir /home/arch; \
     chown arch:arch /home/arch;
 
-USER arch
+# WORKAROUND for glibc 2.33 and old Docker
+# See https://github.com/actions/virtual-environments/issues/2658
+# Thanks to https://github.com/lxqt/lxqt-panel/pull/1562
+RUN patched_glibc=glibc-linux4-2.33-4-x86_64.pkg.tar.zst && \
+    curl -LO "https://repo.archlinuxcn.org/x86_64/$patched_glibc" && \
+    bsdtar -C / -xvf "$patched_glibc"
 
 WORKDIR /home/arch/yay
 RUN git clone https://aur.archlinux.org/yay.git .; \
     makepkg -si --noconfirm; \
     #
     # install packages
-    sudo pacman -Syu qemu libvirt dnsmasq virt-manager bridge-utils flex bison ebtables edk2-ovmf \
+    pacman -Syu qemu libvirt dnsmasq virt-manager bridge-utils flex bison ebtables edk2-ovmf \
     netctl libvirt-dbus libguestfs --noconfirm;
 
 WORKDIR /home/arch/gibMacOS
