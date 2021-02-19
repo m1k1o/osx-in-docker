@@ -3,8 +3,8 @@
 # All credits for OpenCore support go to https://github.com/Leoyzen/KVM-Opencore and
 # https://github.com/thenickdude/KVM-Opencore/. Thanks!
 
-MEM="3072"
-SMP="4,cores=2"
+MEM="8192"
+SMP="8,cores=4"
 OPT="+pcid,+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check"
 MAC="52:54:00:09:49:17"
 
